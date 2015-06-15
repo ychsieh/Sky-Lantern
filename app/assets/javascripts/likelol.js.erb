@@ -1,0 +1,45 @@
+//= require jquery
+//= require jquery_ujs
+
+$(function(){
+	//like button ajax
+	$('button.like').click(function (){
+		var msg_id = $(this).attr('id');
+		var ajax_url = "/like/"+msg_id;
+		console.log(ajax_url);
+        
+		$.ajax({
+  			url: ajax_url,
+  			type: "GET",
+  			dataType: "json",
+  			success: function(data) {
+  				var like_array = data.msg.like;
+  				console.log(like_array);
+  				console.log(ajax_url);
+  				$('span#like_'+msg_id).replaceWith('<span class="like_count" id="like_'+msg_id+'"> '+like_array.length+' </span>');
+  			}
+  		});
+
+	});
+	//lol button ajax
+	$('button.lol').click(function (){
+		var msg_id = $(this).attr('id');
+		var ajax_url = "/lol/"+msg_id;
+		console.log(ajax_url);
+        
+		$.ajax({
+  			url: ajax_url,
+  			type: "GET",
+  			dataType: "json",
+  			success: function(data) {
+  				var lol_array = data.msg.lol;
+  				console.log(lol_array);
+  				console.log(ajax_url);
+  				$('span#lol_'+msg_id).replaceWith('<span class="lol_count" id="lol_'+msg_id+'"> '+lol_array.length+' </span>');
+  			}
+  		});
+
+	});
+
+});
+

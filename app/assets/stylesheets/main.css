@@ -1,0 +1,38 @@
+body {
+  font-family: 'Oxygen', sans-serif; }
+
+.disappear {
+  opacity: 0;
+  -moz-opacity: 0;
+  filter: alpha(opacity=0); }
+
+.appear {
+  opacity: 1;
+  -moz-opacity: 1;
+  filter: alpha(opacity=1); }
+
+div.addPost div.destroy {
+  cursor: pointer;
+  z-index: 99;
+  position: absolute;
+  background: url(close_button.png);
+  top:-18px;
+  left:580px;
+  width:36px;
+  height:36px;
+  background-repeat:no-repeat;
+  background-position: center center;
+}
+
+div.friendList div.destroy {
+  cursor: pointer;
+  z-index: 99;
+  position: absolute;
+  background: url(close_button.png);
+  top:-18px;
+  left:780px;
+  width:36px;
+  height:36px;
+  background-repeat:no-repeat;
+  background-position: center center;
+}

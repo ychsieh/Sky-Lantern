@@ -1,0 +1,186 @@
+//= require jquery
+//= require jquery_ujs
+
+
+$(function(){
+	var reloadVar = 0;
+	setInterval(function () { 
+		console.log(reloadVar);
+		reloadVar++;
+		$.ajax({
+  			url: "/index/reload",
+  			type: "GET",
+  			dataType: "json",
+			success: function(data) {
+				var msg_feed = data.feed;
+				var now_time = new Date();
+				console.log("format1 : "+now_time);
+				var now_time_second = Math.round((now_time.getTime())/1000);
+
+				console.log("msg_feed : "+ msg_feed);
+				$('div.feedicon').remove();
+				$('div.feeditem').remove();
+
+				var i = 0;
+				for(i=0; i<msg_feed.length; i++){
+					var time_ratio = (msg_feed[i].dead_time - now_time_second)/(msg_feed[i].dead_time - msg_feed[i].start_time);
+					time_ratio = time_ratio.toFixed(2);
+					if(time_ratio < 0){
+						time_ratio = 0;
+					}
+					var lantern_top = time_ratio * 520;
+					$('<div class="feedicon" id="feedicon-'+(i+1)+'">'+
+					    '<img class="feedicon_img" id="'+(i+1)+'" src="assets/lantern.gif" style="top: '+lantern_top+'px;">'+
+					    '<div class="lantern_color" id="color-'+(i+1)+'"></div>'+
+					    '<div class="mini_img" id="mini_img-'+(i+1)+'"><img src="https://graph.facebook.com/'+msg_feed[i].user_id+'/picture"></div>'+
+					  '</div>'+
+					  '<div class="feeditem" id="feeditem-'+(i+1)+'">'+
+					  	'<div class="feeditemprofile">'+
+	                    	'<a href="/user/'+msg_feed[i].user_id+'"><img class="feedprofile" src="https://graph.facebook.com/'+msg_feed[i].user_id+'/picture"></a>'+
+							'<h1><a href="/user/'+msg_feed[i].user_id+'">'+msg_feed[i].user_name+'</a></h1>'+
+						'</div>'+
+						'<div class="contentitem">'+
+							'<div class="feeditemtitle">'+msg_feed[i].title+'</div>'+
+							'<div class="feeditemtime">'+
+								'<span>---  after '+(msg_feed[i].dead_time - now_time_second)+' seconds</span>'+
+							'</div>'+
+					  		'<div class="mood">'+		
+								'<span class="like_count" id="like_'+msg_feed[i].msg_id+'"> '+msg_feed[i].like.length+' </span>'+
+								'<button name"like" type="submit" class="like" id="'+msg_feed[i].msg_id+'">Like</button>'+	
+								'<span>|</span>'+
+								'<span class="lol_count" id="lol_'+msg_feed[i].msg_id+'"> '+msg_feed[i].lol.length+' </span>'+
+								'<button name"laugh" type="submit" class="lol" id="'+msg_feed[i].msg_id+'">Laugh</button>'+
+								'<div class="read_more"></div>'+
+								'<a class="read_more" href="/msg/'+msg_feed[i].msg_id+'">read more</a>'+
+							'</div>'+
+							'<div class="ratio">'+
+								'<div class="time_ratio">'+(100-(time_ratio*100))+'%</div>'+
+								'<div class="progressbar" id="'+(time_ratio*100)+'"></div>'+
+							'</div>'+
+						'</div>'+	
+					  '</div>').appendTo('div.feed-container');
+					/*
+					console.log("item "+i+":");
+					console.log("title:"+msg_feed[i].title);
+					console.log("content:"+msg_feed[i].content);
+					console.log("time_ratio:"+time_ratio);
+					*/
+				}
+				//let lantern fly
+				$('div.feedicon img.feedicon_img').each(function(index) {
+					console.log("refresh");
+					var currentId = $(this).attr('id');
+					var tempTop = $(this).position().top;
+					var tempLeft = $('div#feedicon-'+ currentId).position().left;
+
+					$('div#mini_img-'+ currentId).css('top', tempTop+55);
+
+					var feeditem_height = $('div#feeditem-'+ currentId).css('height');
+					feeditem_height = feeditem_height.split("px");
+					feeditem_height[0] = parseInt(feeditem_height[0]);
+					var heightAddTop = feeditem_height[0] + tempTop;
+					// console.log("feeditem"+currentId+":"+ tempLeft);
+
+					// control the feeditem position --------------------
+					if(heightAddTop > 520){
+						$('div#feeditem-'+ currentId).css('top', tempTop+58-feeditem_height[0]);
+						if(tempLeft > 600){
+							$('div#feeditem-'+ currentId).css('left', tempLeft-402);
+						}
+						else{
+							$('div#feeditem-'+ currentId).css('left', tempLeft+36);
+						}
+					}
+					else{
+						$('div#feeditem-'+ currentId).css('top', tempTop+58+36);
+						if(tempLeft > 600){
+							$('div#feeditem-'+ currentId).css('left', tempLeft-402);
+						}
+						else{
+							$('div#feeditem-'+ currentId).css('left', tempLeft+36);
+						}
+					}
+					
+					$('div#color-'+ currentId).css('top', tempTop+20);
+				});
+				//when lantern hover
+				$('div.feedicon img').on('hover',function(){
+		        	$('div.lantern_color').hide();           //color hide
+		        	$('div.feeditem').hide();                
+		        	var currentId = $(this).attr('id');
+		        	var top = $(this).position().top;
+		        	var left = $('div#feedicon-'+ currentId).position().left;
+				    
+					$('div#feeditem-'+ currentId).show();
+					$('div#color-'+ currentId).show();
+				});
+				//feeditem show and hide---------------------------------------------
+				$('div.feeditem').mouseover(function(){
+					$(this).show();
+				});
+				$('div.feeditem').mouseout(function(){
+					$(this).hide();
+					$('div.lantern_color').hide();
+				});
+
+				//button ------------------------------------------------------
+				$('button.like').button();
+				$('button.lol').button();
+
+				//time-ratio progressbar ---------------------------------------
+				$('.progressbar').each(function(index) {
+					var ratio = $(this).attr('id');
+					var ratio_value = parseFloat(ratio);
+					ratio_value = 100 - ratio_value;
+					$(this).progressbar({
+						value: ratio_value
+					});
+				});
+
+				//like button ajax
+				$('button.like').click(function (){
+					var msg_id = $(this).attr('id');
+					var ajax_url = "/like/"+msg_id;
+					console.log(ajax_url);
+			        
+					$.ajax({
+			  			url: ajax_url,
+			  			type: "GET",
+			  			dataType: "json",
+			  			success: function(data) {
+			  				var like_array = data.msg.like;
+			  				console.log(like_array);
+			  				console.log(ajax_url);
+			  				$('span#like_'+msg_id).replaceWith('<span class="like_count" id="like_'+msg_id+'"> '+like_array.length+' </span>');
+			  			}
+			  		});
+
+				});
+				//lol button ajax
+				$('button.lol').click(function (){
+					var msg_id = $(this).attr('id');
+					var ajax_url = "/lol/"+msg_id;
+					console.log(ajax_url);
+			        
+					$.ajax({
+			  			url: ajax_url,
+			  			type: "GET",
+			  			dataType: "json",
+			  			success: function(data) {
+			  				var lol_array = data.msg.lol;
+			  				console.log(lol_array);
+			  				console.log(ajax_url);
+			  				$('span#lol_'+msg_id).replaceWith('<span class="lol_count" id="lol_'+msg_id+'"> '+lol_array.length+' </span>');
+			  			}
+			  		});
+
+				});
+			
+				// alert("SUCCESS!!!");
+			},
+  			error: function() {
+			alert("ERROR!!!");
+			}
+		});
+	}, 120000);
+});

@@ -1,0 +1,27 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  id: MyString
+  msg_id: MyString
+  title: MyString
+  content: MyText
+  start_time: 2012-05-23 21:03:38
+  dead_time: 2012-05-23 21:03:38
+  like: MyText
+  lol: MyText
+  vote_yes: MyText
+  vote_no: MyText
+  conclusion: MyText
+
+two:
+  id: MyString
+  msg_id: MyString
+  title: MyString
+  content: MyText
+  start_time: 2012-05-23 21:03:38
+  dead_time: 2012-05-23 21:03:38
+  like: MyText
+  lol: MyText
+  vote_yes: MyText
+  vote_no: MyText
+  conclusion: MyText

@@ -1,0 +1,259 @@
+<!-- app/views/home/index.html.erb -->
+<% content_for :head do %>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.4.1/build/cssreset/cssreset-min.css">
+  <link href='http://fonts.googleapis.com/css?family=Oxygen' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Comfortaa' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" type="text/css" href="assets/desktop.css">
+  <link rel="stylesheet" type="text/css" href="assets/main.css"/>
+  <link rel="stylesheet" type="text/css" href="assets/style.css"/>
+  <link rel="stylesheet" type="text/css" href="assets/out.css"/>
+  <link rel="stylesheet" type="text/css" href="assets/jquery-ui-1.8.20.custom.css"/>
+  <!-- Scripts -->
+  <script type="text/javascript" src="assets/main.js"></script>
+  <!--<script type="text/javascript" src="assets/reload.js"></script>-->
+  <script type="text/javascript" src="assets/likelol.js"></script>
+  <script type="text/javascript" src="assets/jquery-1.7.2.min.js"></script>
+  <script type="text/javascript" src="assets/jquery-ui-1.8.20.custom.min.js"></script>
+  <!-- <title>Sky Lantern</title> -->
+<% end %>
+
+
+<div class="title">
+	<div class="logo"><img src="assets/title9.gif" height="100%" width="100%"/></div>
+	<div class="title_control">
+		<div class="add"></div>
+		<!-- <div class="msg"></div> -->
+	</div>
+	<div class="userinfo">
+		<a href="/user/<%= @user['id']%>"><span id="UserName"><%= @user['name'] %></span></a>
+		<img id="UserPhoto" src="https://graph.facebook.com/<%= @user['id']%>/picture" height="36px" width="36px"/>
+	</div>
+</div>
+<div class="background">
+	<% container_width = (@msg_feed.count) * 62 + 1000 %>
+	<div class="feed-background"></div>
+		<div class="feed-container">
+			<div class="move_right"><img src="assets/icon/arrow-right.png"></div>
+			<div class="move_left"><img src="assets/icon/arrow-left.png"></div>
+
+			<div class="feed_time_block_start"><div class="time_line_start">今天</div></div>
+			<% now_time = Time.now %>
+			<% block_time = Time.new(now_time.year, now_time.mon, now_time.day, 23, 59, 59) %>
+			<% prev_time = block_time %>
+		    <% index = 1 %>
+			<% @msg_feed.each do |msg| %>
+				<% start_time = msg[:start_time].localtime %>
+				<!-- block_time = <%= block_time %> -->
+				<!-- start_time = <%= start_time %> -->
+				<!-- diff = <%= (block_time.to_i - msg[:start_time].to_i) %> -->
+				
+
+				<% if (block_time - start_time).to_i >= 86400 %>
+					<% block_time = Time.new(start_time.year, start_time.mon, start_time.day, 23, 59, 59) %>
+					<div class="feed_time_block_divide" id="<%= index %>">
+						<div class="time_line_date"><%= block_time.strftime("%m月%d日") %></div>
+					</div>
+					<% prev_time = block_time %>				
+				<% end %>
+
+
+				<% time_ratio = (msg[:dead_time] - now_time)/(msg[:dead_time] - msg[:start_time]) %>
+				<% time_ratio = (time_ratio).round(2) %>
+				<% if(time_ratio < 0)
+					time_ratio = 0
+	   			   end %>
+
+
+				<% lantern_top = time_ratio * 400 %>
+				<% lantern_left = prev_time - start_time %>
+				<% prev_time = start_time %>
+				<% lantern_margin_left = (lantern_left*0.003588)-10%>
+				<% lantern_margin_left = lantern_margin_left.round%>
+
+				
+				<div class="feed_hour_divide" id="hour_divide-<%=index%>" style="margin-left: <%=lantern_margin_left%>px; z-index: <%= 85-index %>;">
+					<div class="time_line_hour"><%= start_time.strftime("%H:%M") %></div>
+				</div>
+
+				<div class="feedicon" id="feedicon-<%= index %>" 
+					<% if lantern_margin_left < 0 %>
+						style="z-index: <%= 90 - (index%10) %>; margin-left: <%= -12+lantern_margin_left%>px;">
+					<% else %>
+						style="z-index: <%= 90 %>;">
+					<% end %>
+				
+					<img class="feedicon_img" id="<%= index %>" src="assets/lantern.gif" style="top: <%=lantern_top%>px;">
+					<div class="lantern_color" id="color-<%= index %>" style="top: <%= (lantern_top + 20) %>px;"></div>
+					
+					<div class="mini_img" id="mini_img-<%= index %>"  style="top: <%= (lantern_top + 40) %>px;"><img src="https://graph.facebook.com/<%= msg[:user_id]%>/picture"></div>
+
+					<div class="feeditem" id="feeditem-<%= index %>" style="top: <%= (lantern_top + 20)%>px; left: 30px;" msg="<%= msg[:msg_id]%>">
+						<div class="feeditemprofile">
+							<a href="/user/<%= msg[:user_id]%>"><img class="feedprofile" src="https://graph.facebook.com/<%= msg[:user_id]%>/picture"></a>
+							<h1><a href="/user/<%= msg[:user_id]%>"><%= msg[:user_name]%></a></h1>
+						</div>
+						<div class="contentitem">
+							<div class="feeditem_content"><%= msg[:content][0..10] %></div>
+						</div>
+					</div>
+
+					<div class="feeditem_all" id="feeditem_all-<%= index %>" style="top: <%= (lantern_top + 20)%>px; left: 30px;">
+						<div class="feeditemprofile">
+							<a href="/user/<%= msg[:user_id]%>"><img class="feedprofile" src="https://graph.facebook.com/<%= msg[:user_id]%>/picture"></a>
+							<h1><a href="/user/<%= msg[:user_id]%>"><%= msg[:user_name]%></a></h1>
+						</div>
+						<div class="contentitem">
+							<div class="feeditem_content"><%= msg[:content] %></div>
+							<div class="feeditemtime">
+								<% @overTime = msg[:dead_time].to_i - Time.now.to_i %>
+								<% if(@overTime > 0) %>
+									<% if(Time.at(@overTime).year-Time.at(0).year > 0) %>
+										<% @overTimeText = "--- after " + (Time.at(@overTime).year-Time.at(0).year).to_s + " year (s)" %>
+									<% elsif(Time.at(@overTime).mon-Time.at(0).mon > 0) %>
+			            				<% @overTimeText = "--- after " + (Time.at(@overTime).mon-Time.at(0).mon).to_s + " month (s)" %>
+			        				<% elsif(Time.at(@overTime).day-Time.at(0).day > 0) %>
+			            				<% @overTimeText = "--- after " + (Time.at(@overTime).day-Time.at(0).day).to_s + " day (s)" %>
+			        				<% elsif(Time.at(@overTime).hour-Time.at(0).hour > 0) %>
+			            				<% @overTimeText = "--- after " + (Time.at(@overTime).hour-Time.at(0).hour).to_s + " hour(s)" %>
+			        				<% elsif(Time.at(@overTime).min-Time.at(0).min > 0) %>
+			            				<% @overTimeText = "--- after " + (Time.at(@overTime).min-Time.at(0).min).to_s + " minute (s)" %>
+			        				<% else %>
+			           					<% @overTimeText = "--- after " + (Time.at(@overTime).sec-Time.at(0).sec).to_s + " sec (s)" %>
+			        				<% end %>
+			    				<% else %>
+			        				<% @overTimeText = "--- done at " + msg[:dead_time].to_s %>
+			    				<% end %>
+
+								<span><%= @overTimeText %></span>
+							</div>
+							<div class="mood">		
+								<span class="like_count" id="like_<%= msg[:msg_id]%>"> <%= (msg[:like]).count %> </span>
+								<button name"like" type="submit" class="like" id="<%= msg[:msg_id]%>">Like</button>	
+								<span>|</span>
+								<span class="lol_count" id="lol_<%= msg[:msg_id]%>"> <%= (msg[:lol]).count %> </span>
+								<button name"laugh" type="submit" class="lol" id="<%= msg[:msg_id]%>">Laugh</button>
+							</div>
+						</div>
+						<div class="feed_comment_list" id="feed_comment_list-<%= index %>">
+							<div class="new_comment">
+							<%= form_tag({:controller => "home",:action => "commentCreat"},:method => "post",:class => "comment") do %>
+								<div class="new"><%= text_field :comment, :content, :placeholder => 'Write a comment...' %></div>
+								<div style="display:none;"><%= text_field :comment, :msg_id, :value =>@msg_id %></div>
+								<%= submit_tag("s", :style => "width:0px; height:0px; position:absolute;top:-10%") %>
+							<% end %>
+							</div>
+						</div>
+
+					</div>
+					<!--
+							<div class="feeditemtime">
+								<% @overTime = msg[:dead_time].to_i - Time.now.to_i %>
+								<% if(@overTime > 0) %>
+									<% if(Time.at(@overTime).year-Time.at(0).year > 0) %>
+										<% @overTimeText = "--- after " + (Time.at(@overTime).year-Time.at(0).year).to_s + " year (s)" %>
+									<% elsif(Time.at(@overTime).mon-Time.at(0).mon > 0) %>
+			            				<% @overTimeText = "--- after " + (Time.at(@overTime).mon-Time.at(0).mon).to_s + " month (s)" %>
+			        				<% elsif(Time.at(@overTime).day-Time.at(0).day > 0) %>
+			            				<% @overTimeText = "--- after " + (Time.at(@overTime).day-Time.at(0).day).to_s + " day (s)" %>
+			        				<% elsif(Time.at(@overTime).hour-Time.at(0).hour > 0) %>
+			            				<% @overTimeText = "--- after " + (Time.at(@overTime).hour-Time.at(0).hour).to_s + " hour(s)" %>
+			        				<% elsif(Time.at(@overTime).min-Time.at(0).min > 0) %>
+			            				<% @overTimeText = "--- after " + (Time.at(@overTime).min-Time.at(0).min).to_s + " minute (s)" %>
+			        				<% else %>
+			           					<% @overTimeText = "--- after " + (Time.at(@overTime).sec-Time.at(0).sec).to_s + " sec (s)" %>
+			        				<% end %>
+			    				<% else %>
+			        				<% @overTimeText = "--- done at " + msg[:dead_time].to_s %>
+			    				<% end %>
+
+								<span><%= @overTimeText %></span>
+							</div>
+							<div class="mood">		
+								<span class="like_count" id="like_<%= msg[:msg_id]%>"> <%= (msg[:like]).count %> </span>
+								<button name"like" type="submit" class="like" id="<%= msg[:msg_id]%>">Like</button>	
+								<span>|</span>
+								<span class="lol_count" id="lol_<%= msg[:msg_id]%>"> <%= (msg[:lol]).count %> </span>
+								<button name"laugh" type="submit" class="lol" id="<%= msg[:msg_id]%>">Laugh</button>
+								<div class="read_more"></div>
+								<a class="read_more" href="/msg/<%= msg[:msg_id] %>">read more</a>
+							</div>
+							-->
+					
+				</div>
+
+			
+			
+		    
+			<% index += 1 %>
+			<% end %>
+			
+		</div>
+	
+	<div class="feed_time_line"></div>
+</div>
+
+<div class="menu" id="TitleMenuStatus" style="display:none;">
+	<ul>
+		<%= link_to(home_path) do %><li>News Feeds</li><% end %>
+		<%= link_to(home_path) do %><li>Favorite</li><% end %>
+		<li class="friendList">Friends</li>
+		<%= link_to(logout_path) do %><li class="FacebookLogout">Logout</li><% end %>
+	</ul>
+</div>
+<div class="friendList" id="friendListStatus" style="display:none;">
+	<div class="destroy"></div>
+	<span>Friends</span>
+	<div class="friendData">
+		<!-- Insert User Data here!! -->
+		<% @friends.each do |friend| %>
+			<div class="friend"> 			
+	            <img src=https://graph.facebook.com/<%= friend[:id] %>/picture />
+	            <span><%= friend[:name] %></span>
+	            <% if(friend[:in] == false) %>
+	            <div class="invite"></div>
+	            <% end %>
+	        </div>
+        <% end %>
+	</div>
+</div>
+<div class="addPost" id="addPostStatus" style="display:none;">
+	<div class="destroy"></div>
+	<span class="header">Fly Your Dream</span>
+	<div class="addPost_sky_lantern"></div>
+	<%= form_tag({:controller => "home", :action => "create"}, :method => "post", :class => "add") do %>
+	
+	<div class="addPost_title_control">
+		<div class="one_man"></div>
+		<%= text_field(:msg, :title, :placeholder => 'title') %>
+	</div>
+
+  	<%= text_area(:msg, :content, :size => "40x12", :placeholder => 'your dream...') %>
+
+  	<div class="photoUpload">
+		<img id="addPostPreviewIMG" width="130px" height="130px" style="display:none;"/>
+		<embed id="addPostPreviewVIDEO" type="application/x-shockwave-flash" allowfullscreen="true" allowScriptAccess="always"  width="200px" height="130px" style="display:none;" />
+		<%= text_field(:msg, :link, :id => 'addPostPhotoURL', :placeholder => 'Enter a photo link or a youtube link here') %>
+
+		<!-- <input id="addPostPhotoURL" type="text" placeholder="Enter a photo link or a youtube link here"/> -->
+		<h1 class="preview">preview</h1>
+	</div>
+	<div  class="pushToFB">
+		<%=check_box_tag 'pushToFB',1,true%><label> Post to Fackbook</label>
+	</div>
+  	<div class="timeset">
+  	<%= select(:msg, :timeSetSelect, options_for_select([['before', 'before'], ['after', 'after']]) ) %>
+  	<%= text_field :msg, :beforeDate, :id => 'datepicker' %>
+  	<%= text_field :msg, :afterTime, :id => 'afterpicker' %>
+  	<%= select(:msg, :afterTimeUnit, options_for_select([['minutes', 'minutes'], ['hours', 'hours'], ['days', 'days'], ['weeks', 'weeks'], ['months', 'months'], ['years', 'years']])) %>
+    </div>
+
+    <div class="checkInput"></div>
+  	<%= submit_tag("Fly", :class => "flybuttom", :disabled => "disabled") %>
+  
+	<% end %>
+</div>
+
+<div class="foot">
+		<div class="total_count">目前總共有<%=@msg_feed.count%>個天燈</div>
+</div>

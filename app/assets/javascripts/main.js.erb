@@ -1,0 +1,475 @@
+//= require jquery
+//= require jquery_ujs
+
+
+$(document).ready(function(){
+	console.log("Javascript Work correctly.");
+	if(window.innerWidth>600){
+		function HiddenShow(id){
+			var state = document.getElementById(id).style.display;
+			if (state == 'block') {
+				document.getElementById(id).style.display = 'none';
+			} else{
+				document.getElementById(id).style.display = 'block';
+			}
+		};
+        
+        //let lantern fly
+        var windowWidth = $(window).width();
+        console.log("window width :"+windowWidth);
+        /*
+		$('div.feedicon img.feedicon_img').each(function(index) {
+			var currentId = $(this).attr('id');
+			var tempTop = $(this).position().top;
+			var tempLeft = $('div#feedicon-'+ currentId).position().left;
+
+			$(this).css('top', '400px');
+			$(this).animate({top:tempTop},8000);
+
+			$('div#mini_img-'+ currentId).css('top', '575px');
+			$('div#mini_img-'+ currentId).animate({top:tempTop+55},8000);
+
+			var feeditem_height = $('div#feeditem-'+ currentId).css('height');
+			feeditem_height = feeditem_height.split("px");
+			feeditem_height[0] = parseInt(feeditem_height[0]);
+			var heightAddTop = feeditem_height[0] + tempTop;
+			// console.log("feeditem"+currentId+":"+ tempLeft);
+
+			// control the feeditem position --------------------
+			if(heightAddTop > 400){
+				$('div#feeditem-'+ currentId).css('top', 400+58-feeditem_height[0]);
+				if(tempLeft > 600){
+					$('div#feeditem-'+ currentId).css('left', tempLeft-402);
+				}
+				else{
+					$('div#feeditem-'+ currentId).css('left', tempLeft+36);
+				}
+				
+				$('div#feeditem-'+ currentId).animate({top:tempTop+58-feeditem_height[0]},8000);
+
+			}
+			else{
+				$('div#feeditem-'+ currentId).css('top', '494px');
+				if(tempLeft > 600){
+					$('div#feeditem-'+ currentId).css('left', tempLeft-402);
+				}
+				else{
+					$('div#feeditem-'+ currentId).css('left', tempLeft+36);
+				}
+				$('div#feeditem-'+ currentId).animate({top:tempTop+58+36},8000);
+			}
+			
+			$('div#color-'+ currentId).css('top', '540px');
+			$('div#color-'+ currentId).animate({top:tempTop+20},8000);
+		});
+		*/
+		//
+		var scroll = $('div.background').scrollLeft();
+		var feedContainer_width = $('div.feedicon:last').position();
+		feedContainer_width = feedContainer_width.left;
+		console.log("left :"+ feedContainer_width);
+		$('div.feed-background').css('width', feedContainer_width+10000);
+
+
+        
+        //when lantern hover light yellow
+        $('div.feedicon img').on('hover',function(){
+        	$('div.lantern_color').hide();           //color hide
+        	// $('div.feeditem').hide();                
+        	var currentId = $(this).attr('id');
+        	var top = $(this).position().top;
+        	$('div#color-'+ currentId).show();
+        	$('div#hour_divide-'+currentId).css('visibility', 'visible');
+		});
+
+		$('div.feedicon img').mouseout(function(){
+			var currentId = $(this).attr('id');
+			$('div#color-'+ currentId).hide();
+			$('div#hour_divide-'+currentId).css('visibility', 'hidden');
+		});
+
+
+		
+		//when click the feeditem show all feeditem
+		var prevId = 0;
+		$('div.feeditem').click(function(){
+			var feeditemId = $(this).attr('id');
+			feeditemId = feeditemId.split("-");
+			currentId = feeditemId[1];
+
+			$('div#feeditem-'+prevId).show();
+			prevId = currentId;
+			$('div.feeditem_all').hide();
+			$(this).hide();
+			$('div#feeditem_all-'+currentId).show();
+
+			var msg_id = $(this).attr('msg');
+
+			$('div.comment').remove();
+			$.ajax({
+				type: "GET",
+				url: "/comment/"+msg_id,
+				dataType: "html",
+				success: function(data){
+    				console.log(data);
+    				$('div#feed_comment_list-'+currentId).prepend(data);
+  				} 
+			});
+		});
+
+		
+		/*
+		if($('div.lantern_color').css('display') == "block"){
+			console.log("here");
+			var currentId = $('div.feedicon img').attr('id');
+        	var top = $('div.feedicon img').position().top;
+        	var left = $('div#feedicon-'+ currentId).position().left;
+        	$('div#feeditem-'+ currentId).css('top', top+58+36);
+			$('div#feeditem-'+ currentId).css('left', left+36);
+			$('div#color-'+ currentId).css('top', top+20);
+		}*/
+
+        /*
+		$('div.feeditem').on('mouseout',function(){
+			console.log("there");
+			var status = $('div.feeditem').css('display');
+			if( status == "block"){
+				$(this).hide();
+			}
+		});*/
+
+        //move the scroll right=======================================
+		$('div.move_right').on('hover',function(){
+			var containerWidth = $('div.feed-container').css('width');
+			console.log(containerWidth);
+			$(this).css('opacity', '0.5');
+			var scroll = $('div.background').scrollLeft();
+			$('div.background').animate({scrollLeft:scroll+150},1000);
+		});
+
+		$('div.move_right').on('mouseout',function(){
+			$(this).css('opacity', '0');
+			// var scroll = $('div.background').scrollLeft();
+			$('div.background').stop();
+		});
+        //move the scroll left========================================
+		$('div.move_left').on('hover',function(){
+			$(this).css('opacity', '0.5');
+			var scroll = $('div.background').scrollLeft();
+			$('div.background').animate({scrollLeft:scroll-150},1000);
+		});
+
+		$('div.move_left').on('click',function(){
+			//$(this).css('opacity', '0.5');
+			$('div.background').animate({scrollLeft: 0},100);
+		});
+
+		$('div.move_left').on('mouseout',function(){
+			$(this).css('opacity', '0');
+			// var scroll = $('div.background').scrollLeft();
+			$('div.background').stop();
+		});
+		/*
+		$('div.feedicon').on('hover',function(){
+			console.log("I am here");
+			var iconDivPosition = $('div.feedicon').position();
+			var iconImgPosition = $('div.feedicon img').position();
+			$('div.feeditem').css('top', iconImgPosition.top);
+			$('div.feeditem').css('left', iconDivPosition.left);
+			$('div.feeditem').fadeIn(1000);
+		// $('div.feeditem').css('display', 'block');
+		// document.getElementById('TitleMenuStatus').style.display = 'none';
+		});
+		
+		*/
+		//feeditem show and hide---------------------------------------------
+		
+        /*
+		$('body').on('click',function(){
+			$('div.lantern_color').hide();           //color hide
+        	$('div.feeditem').hide();
+        	$('div.menu').hide();   
+		});
+        */
+        //logo menu show and hide---------------------------------------
+		$('div.title div.logo').on('click',function(){
+			$('div.menu').show();
+		});
+		$('div.menu ul').on('mouseover',function(){
+			$('div.menu').show();
+		});
+		$('div.menu ul').on('mouseout',function(){
+			$('div.menu').hide();
+		});
+		
+
+
+
+		$('div.add').on('click',function(){
+			HiddenShow('addPostStatus');
+		});
+		$('div.addPost div.destroy').on('click',function(){
+			HiddenShow('addPostStatus');
+		});
+		$('li.friendList').on('click',function(){
+			HiddenShow('friendListStatus');
+		});
+		$('div.friendList div.destroy').on('click',function(){
+			HiddenShow('friendListStatus');
+		});
+
+
+		/*
+		SelectFunction();
+		$('select.timeSetSelect').on('change',function(){
+			SelectFunction();
+		});
+
+        */
+		
+		$('input.date').on('click',function(){
+			document.getElementById('date').value = "";
+		});
+		$('input.title').on('click',function(){
+			document.getElementById('title').value = "";
+		});
+        
+        //time set
+        var original_select_status = $('select#msg_timeSetSelect').val();
+		if(original_select_status == 'before'){
+			$("#afterpicker").hide();
+			$("select#msg_afterTimeUnit").hide();
+			$("#datepicker").datepicker({ dateFormat: "yy-mm-dd" });
+			console.log(original_select_status);
+		}
+		else{
+			$("#afterpicker").show();
+			$("select#msg_afterTimeUnit").show();
+			$("#datepicker").hide();
+		}
+		$('select#msg_timeSetSelect').on('change',function(){
+			 var select_status = $('select#msg_timeSetSelect').val();
+		     if(select_status == 'after'){
+				$("#datepicker").hide();
+				$("#afterpicker").show();
+				$("select#msg_afterTimeUnit").show();
+				console.log(select_status);
+			 }
+			 if(select_status == 'before'){
+			 	$("#afterpicker").hide();
+			 	$("select#msg_afterTimeUnit").hide();
+			 	$("#datepicker").show();
+			 	$("#datepicker").datepicker();
+				console.log(select_status);
+			 }
+		});
+
+		//button ------------------------------------------------------
+		$('button.like').button();
+		$('button.lol').button();
+
+
+		//time-ratio progressbar ---------------------------------------
+		$('.progressbar').each(function(index) {
+			var ratio = $(this).attr('id');
+			var ratio_value = parseFloat(ratio);
+			ratio_value = 100 - ratio_value;
+			$(this).progressbar({
+				value: ratio_value
+			});
+		});
+
+		// photo and video preview
+		$('div.addPost div.photoUpload h1.preview').button();
+		$('div.addPost div.photoUpload h1.preview').on('click',function(){
+			var previewURL = document.getElementById('addPostPhotoURL').value;
+			var previewPhoto = document.getElementById('addPostPreviewIMG');
+			var previewVIDEO = document.getElementById('addPostPreviewVIDEO');			
+			if(previewURL.indexOf('http://ppt.cc')>-1)
+			{
+				previewURL = previewURL + "@.jpg"
+				previewPhoto.src = previewURL;
+				previewPhoto.style.display = 'block';
+				previewVIDEO.style.display = 'none';
+				previewPhoto.onerror=function(){
+					previewPhoto.style.display = 'none';
+					alert("URL doesn't exist");
+				};
+			}
+			else if(previewURL.indexOf('http://www.youtube.com/')>-1)
+			{
+				previewURL = previewURL.split("v=")[1].split("&")[0]
+				previewVIDEO.src = "http://www.youtube.com/v/" + previewURL +"&feature=player_detailpage";
+				previewVIDEO.style.display = 'block';
+				previewPhoto.style.display = 'none';
+			}else{ 
+				previewPhoto.src = previewURL;
+				previewPhoto.style.display = 'block';
+				previewVIDEO.style.display = 'none';
+				previewPhoto.onerror=function(){
+					previewPhoto.style.display = 'none';
+					alert("URL doesn't exist");
+				};
+			}
+		});
+
+
+
+		//check title
+		$('input#msg_title').focus(function(){
+			$('div.checkInput').replaceWith('<div class="checkInput"></div>');
+			$('input.flybuttom').attr('disabled', 'disabled');
+			$(this).val("");
+			$(this).blur(function(){
+				var titleInput = $(this).val();
+				if(titleInput == ""){
+					$('input.flybuttom').attr('disabled', 'disabled');
+					$('div.checkInput').replaceWith('<div class="checkInput">Please enter your dream title.</div>');
+					console.log("please enter your dream title");
+				}
+				else{
+					if(($('input#datepicker').val())=="" && ($('input#afterpicker').val())==""){
+						$('input.flybuttom').attr('disabled', 'disabled');
+					}
+					else{
+						$('input.flybuttom').removeAttr('disabled');
+					}
+				}
+			});
+		});
+
+
+		//check add_post datepicker input
+		$('input#datepicker').focus(function(){
+			$('div.checkInput').replaceWith('<div class="checkInput"></div>');
+			$('input.flybuttom').attr('disabled', 'disabled');
+			$('input#datepicker').val("");
+			console.log('input datepicker!');
+			$('div#ui-datepicker-div').click(function(){
+				var dateInput = $('input#datepicker').val();
+				if(dateInput != ""){
+					console.log(dateInput);
+					var dateInputDate = new Date(dateInput);
+					dateInputDate.setHours(0);
+					dateInputDate.setMinutes(0);
+					dateInputDate.setSeconds(0);
+					console.log("dateInputDate : "+ dateInputDate);
+					var nowDate = new Date();
+					console.log("nowDate : "+ nowDate);
+					var dateInputDateSecond = dateInputDate.getTime();
+					var nowDateSecond = nowDate.getTime();
+					if((dateInputDateSecond-nowDateSecond)>0){
+						if(($('input#msg_title').val())==""){
+							$('input.flybuttom').attr('disabled', 'disabled');
+							$('div.checkInput').replaceWith('<div class="checkInput">Please enter your dream title.</div>');
+						}
+						else{
+							console.log("future");
+							$('input.flybuttom').removeAttr('disabled');
+						}
+					}
+					else{
+						$('div.checkInput').replaceWith('<div class="checkInput">Please choose tomorrow or future.</div>');
+						console.log("past");
+					}
+				} 			
+			});
+		});
+
+		//check add_post afterpicker input
+		$('input#afterpicker').focus(function(){
+			$('div.checkInput').replaceWith('<div class="checkInput"></div>');
+			$('input.flybuttom').attr('disabled', 'disabled');
+			console.log('input afterpicker!');
+			$(this).blur(function(){
+				var timeInput = $(this).val();
+				console.log(timeInput);
+				var checkTimeInputFloat = parseFloat(timeInput);
+				var checkTimeInputInt = parseInt(timeInput);
+				// console.log(checkTimeInputInt);
+
+				if(checkTimeInputInt > 0){
+					//if input is integer
+					if((checkTimeInputInt-checkTimeInputFloat)==0){
+						if(($('input#msg_title').val())==""){
+							$('input.flybuttom').attr('disabled', 'disabled');
+							$('div.checkInput').replaceWith('<div class="checkInput">Please enter your dream title.</div>');
+						}
+						else{
+							console.log("isInt");
+							$('input.flybuttom').removeAttr('disabled');
+						}			
+					}
+					//if input is float
+					else{
+						$('input.flybuttom').attr('disabled', 'disabled');
+						$('div.checkInput').replaceWith('<div class="checkInput">Please input an integer.</div>');
+						console.log("isFloat");
+					}
+				}
+				//if input is nagative Int
+				else if(checkTimeInputInt < 0){
+					$('input.flybuttom').attr('disabled', 'disabled');
+					$('div.checkInput').replaceWith('<div class="checkInput">Please input a positive integer.</div>');
+					console.log("isNagativeInt"); 
+				}
+				//if input is String
+				else{
+					$('input.flybuttom').attr('disabled', 'disabled');
+					$('div.checkInput').replaceWith('<div class="checkInput">Please input a number.</div>');
+					console.log("isString"); 
+				} 	
+			});
+		});
+
+		$('select#msg_timeSetSelect').change(function(){
+			$('input.flybuttom').attr('disabled', 'disabled'); 
+		});
+
+
+
+
+
+		//textarea
+		/*
+		var valueOfContent = $('textarea#msg_content').val();
+		$('textarea#msg_content').focus(function () {
+			$(this).keypress(function(event) {
+				if(event.which == 13){
+					valueOfContent = valueOfContent + '<br/>';
+				}
+				else{
+					valueOfContent = valueOfContent + String.fromCharCode(event);
+				}				
+			});
+		});
+
+		$('form.add').submit(function() {
+			$('textarea#msg_content').val(valueOfContent);
+		});
+		*/
+
+
+
+		$(document).mousemove(function (e) {
+			var $sx = e.pageX + $('div.background').scrollLeft();
+			var $sy = e.pageY;
+
+            //console.log("sx="+$sx);
+            //console.log("sy="+$sy);
+            /*
+			$('div.feedicon').on('mouseout',function(){
+				var currentId = $(this).attr('id');
+				$('div#feeditem-'+ currentId).fadeOut(1000);
+			});*/
+		});
+        //console.log($sx);
+		
+		
+	}
+	else{
+		
+	}
+});
+
+

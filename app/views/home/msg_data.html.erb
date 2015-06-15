@@ -1,0 +1,39 @@
+<% content_for :head do %>
+  <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.4.1/build/cssreset/cssreset-min.css">
+  <title>Msg_data</title>
+<% end %>
+
+
+<h1>Msg_data : </h1>
+<% index = 1 %>
+<% @all_msg.each do |msg| %>
+<p>-------------------------------------------------------</p>
+<h2><%= index %></h2>
+<p>msg_id : <%= msg[:msg_id] %></p>
+<p>user :</p><img id="UserPhoto" src="https://graph.facebook.com/<%= msg[:user_id]%>/picture" height="36px" width="36px"/>
+<p>user_id : <%= msg[:user_id] %></p>
+<p>user_name : <%= msg[:user_name] %></p>
+<p>title : <%= msg[:title] %></p>
+<p>content : <%= msg[:content] %></p>
+<p>start_Time : <%= msg[:start_time] %></p>
+<p>dead_time : <%= msg[:dead_time] %></p>
+<p>color : <%= msg[:color] %></p>
+<p>like : <%= msg[:like] %></p>
+<p>lol : <%= msg[:lol] %></p>
+<p>link : <%= msg[:link] %></p>
+<p>votes_yes : <%= msg[:vote_yes] %></p>
+<p>votes_no : <%= msg[:vote_no] %></p>
+<p>conclusion : <%= msg[:conslusion] %></p>
+
+<% now_time = Time.now %>
+<% @time_ratio = (msg[:dead_time] - now_time)/(msg[:dead_time] - msg[:start_time]) %>
+<% @time_ratio = (@time_ratio*100).round(2) %>
+<% if(@time_ratio < 0)
+	@time_ratio = 0
+   end %>
+<p>time_ratio : <%= @time_ratio %></p>
+<div class="progressbar" id="<%= @time_ratio %>"></div>
+<p>link : <%= @time_ratio %></p>
+
+<% index += 1 %>
+<% end %>

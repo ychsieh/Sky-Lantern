@@ -1,0 +1,13 @@
+<h1>add</h1>
+<%= form_tag({:controller => "home", :action => "create"}, :method => "post") do %>
+  <p>title : </p><%= text_field(:msg, :title) %>
+  <p>content : </p><%= text_area(:msg, :content, :size => "40x12") %>
+  <p>time : </p><%= select(:msg, :timeSetSelect, options_for_select([['before', 'before'], ['after', 'after']]) ) %>
+  <%= text_field :msg, :beforeDate, :id => 'datepicker' %>
+  <%= text_field :msg, :afterTime, :id => 'afterpicker' %>
+  <%= select(:msg, :afterTimeUnit, options_for_select([['minutes', 'minutes'], ['hours', 'hours'], ['days', 'days'], ['weeks', 'weeks'], ['mounths', 'mounths'], ['years', 'years']])) %>
+  <%= submit_tag("Create") %>
+  
+<% end %>
+
+

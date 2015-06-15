@@ -1,0 +1,140 @@
+<!-- app/views/home/msg.html.erb -->
+<!-- app/views/home/msg.html.erb -->
+<% content_for :head do %>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.4.1/build/cssreset/cssreset-min.css">
+  <link href='http://fonts.googleapis.com/css?family=Oxygen' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Comfortaa' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" type="text/css" href="../assets/desktop.css">
+  <link rel="stylesheet" type="text/css" href="../assets/main.css"/>
+  <link rel="stylesheet" type="text/css" href="../assets/jquery-ui-1.8.20.custom.css"/>
+  <link rel="stylesheet" type="text/css" href="../assets/msg.css"/>
+  <!-- Scripts -->
+  <script type="text/javascript" src="../assets/main.js"></script>
+  <script type="text/javascript" src="../assets/likelol.js"></script>
+  <script type="text/javascript" src="../assets/jquery-1.7.2.min.js"></script>
+  <script type="text/javascript" src="../assets/jquery-ui-1.8.20.custom.min.js"></script>
+<% end %>
+<div class="msgBackground">
+	<div class="background"></div>
+	<div class="title">
+		<div class="logo"><img src="../assets/title9.gif" height="100%" width="100%"/></div>
+		<div class="title_control">
+			<div class="add"></div>
+			<!-- <div class="msg"></div> -->
+		</div>
+		<div class="userinfo">
+			<a href="/user/<%= @current_user['id']%>">
+				<span id="UserName"><%= @current_user['name'] %></span>
+			</a>
+			<img id="UserPhoto" src="https://graph.facebook.com/<%=@current_user['id']%>/picture" height="36px" width="36px"/>
+		</div>
+	</div>
+</div>
+<div class="msg_id">
+	<div class="left">		
+		<button class="prev" style="visibility:hidden;">< Prev</button>
+		<button class="next" style="visibility:hidden;">Next ></button>
+
+		<div class="profile">
+			<a href="/user/<%= @msg_data['user_id']%>">
+			<img class="feedprofile" src="https://graph.facebook.com/<%= @msg_data['user_id']%>/picture?type=large"></a>
+		</div>
+		<div class="titleitem">
+			<h1 style="display:inline-block;"><a href="/user/<%= @msg_data['user_id']%>"><span id="UserName"><%= @msg_data['user_name']%></span></a></h1>
+			<div class="content"><%= @msg_data['title']%></div>
+			<div class="feeditemtime">
+				<%= @overTimeText %>
+			</div>
+		</div>
+		<div class="mood">		
+			<span class="like_count" id="like_<%= @msg_data[:msg_id]%>"> <%= (@msg_data[:like]).count %> </span>
+			<button name="like" type="submit" class="like"  id="<%= @msg_data[:msg_id]%>">Like</button>	
+			<span>|</span>
+			<span class="lol_count" id="lol_<%= @msg_data[:msg_id]%>"> <%= (@msg_data[:lol]).count %> </span>
+			<button name="laugh" type="submit" class="lol" id="<%= @msg_data[:msg_id]%>">Laugh</button>
+		</div>
+		<% if(@msg_data[:msg_id].split("_")[0] == @current_user['id']) %>
+			<a href=<%= "/deleteMsg/" + @msg_data[:msg_id] %>><div class="delete_feed"></div></a>
+		<% else %>
+			<div class="delete_feed" style="display:none;"></div>
+		<% end %>
+		<div class="line"></div>
+		<div class="vote" style="display:none;">
+			Display of vote result!
+		</div>	
+		<div class="description">
+			<p><%= @msg_data['content']%></p>
+			<% if(@msg_data['dead_time']<Time.now) %>
+			<div class="donestamp"><img src="../assets/done.gif" /></div>
+			<% end %>
+		</div>
+		<h2>Record</h2>
+		<div class="proof">
+			<center>
+				<% if(@msg_data['link'].nil? == false) %>
+					<% if(@msg_data['link'].include?('youtube')) %>
+						<embed type=application/x-shockwave-flash allowfullscreen=true allowscriptaccess=always src=<%= @msg_data['link'] %>>
+					<% else %>
+						<img src=<%= @msg_data['link'] %>>
+					<% end %>
+				<% end %>
+			</center>
+		</div>
+	</div>
+	<div class="right">
+		<h1 class="comment" style="display: inline-block;">Comments</h1>
+		<div class="quit"><a href="/">x</a></div>
+		<div class="comment">
+		<!--<form class="comment" method="post">-->
+		<%= form_tag({:controller => "home",:action => "commentCreat"},:method => "post",:class => "comment") do %>
+			<ul>
+				<% @comment_data.each do |comment| %>
+				<li>
+					<div class="listcomment">
+						<a class="pic" href="/user/<%= comment['user_id']%>"><img class="commentprofile"  src="https://graph.facebook.com/<%=comment['user_id'] %>/picture" /></a>
+						<a class="name" href="/user/<%= comment['user_id']%>"><%= comment['user_name'] %></a>
+						<% if(comment['comment_id'].split("_")[0] == @current_user['id'] || comment['comment_id'].split("_")[2] == @current_user['id']) %>
+						<div class="delete_comment"><a href=<%= "/deleteComment/" + comment['comment_id'] %>>x</a></div>
+						<% else %>
+						<div class="delete_comment" style="display:none;">x</div>
+						<% end %>
+						<div class="commentcontent"><%= comment['content'] %></div>
+						<div class="time">
+							<% if(Time.at(Time.now - comment['time']).year - Time.at(0).year > 0) %>
+								<%= (Time.at(Time.now - comment['time']).year - Time.at(0).year) %> yesrs ago ·
+							<% elsif(Time.at(Time.now - comment['time']).mon - Time.at(0).mon > 0) %>
+								<%= (Time.at(Time.now - comment['time']).mon - Time.at(0).mon) %> months ago ·
+							<% elsif(Time.at(Time.now - comment['time']).day - Time.at(0).day > 0) %>
+								<%= (Time.at(Time.now - comment['time']).day - Time.at(0).day) %> days ago ·
+							<% elsif(Time.at(Time.now - comment['time']).hour - Time.at(0).hour > 0) %>
+								<%= (Time.at(Time.now - comment['time']).hour - Time.at(0).hour) %> hours ago ·
+							<% elsif(Time.at(Time.now - comment['time']).min - Time.at(0).min > 0) %>
+								<%= (Time.at(Time.now - comment['time']).min - Time.at(0).min) %> minutes ago ·
+							<% else %>
+								<%= (Time.at(Time.now - comment['time']).sec- Time.at(0).sec) %> secs ago ·
+							<% end %>
+						</div>
+						<!--
+						<span class="number">
+							<%= (comment['like']).count %>
+						</span>
+						<button name="like" type="submit" class="like" id=<%= comment['comment_id']%>>Like</button>
+						-->
+					</div>
+				</li>
+				<% end %>
+				<li>
+					<div class="new"><%= text_field(:comment, :content, :placeholder => 'Write a comment...') %></div>
+					<%= submit_tag("s", :style => "width:0px; height:0px; position:absolute;top:-10%") %>
+					<div style="display:none;">
+					<%= text_field(:comment, :msg_id, :value =>@msg_data['msg_id']) %>
+
+					</div>
+				<% end %></li>
+			</ul>
+		</div>	
+	</div>
+</div>
+
+

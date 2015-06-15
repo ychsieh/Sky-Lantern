@@ -1,0 +1,10 @@
+# config/rest-graph.yaml
+development:
+    app_id: '217319765052852'
+    secret: 'f661b6e50521ada429aeb175d059935b'
+    callback_host: 'localhost:3000'
+
+production:
+    app_id: '155537004576917'
+    secret: 'a3d1323fe0ca08784cc00060c67e4b49'
+    callback_host: 'skylantern.herokuapp.com/'

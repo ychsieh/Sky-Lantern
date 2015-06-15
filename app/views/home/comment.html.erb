@@ -1,0 +1,34 @@
+<div class="comment">
+	<ul>
+	<% if @comment_data.count == 0 %>
+		<li> without comment </li>
+	<% else %>
+		<% @comment_data.each do |c| %>
+		<li>
+		<div class="listcomment">
+			<a class="pic" href="/user/<%= c['user_id']%>"><img class="commentprofile"  src="https://graph.facebook.com/<%= c['user_id'] %>/picture" /></a>
+			<a class="name" href="/user/<%= c['user_id']%>"><%= c['user_name'] %></a>
+
+
+			<div class="commentcontent"><%= c['content'] %></div>
+			<div class="time">
+				<% if(Time.at(Time.now - c['time']).year - Time.at(0).year > 0) %>
+					<%= (Time.at(Time.now - c['time']).year - Time.at(0).year) %> yesrs ago ·
+				<% elsif(Time.at(Time.now - c['time']).mon - Time.at(0).mon > 0) %>
+					<%= (Time.at(Time.now - c['time']).mon - Time.at(0).mon) %> months ago ·
+				<% elsif(Time.at(Time.now - c['time']).day - Time.at(0).day > 0) %>
+					<%= (Time.at(Time.now - c['time']).day - Time.at(0).day) %> days ago ·
+				<% elsif(Time.at(Time.now - c['time']).hour - Time.at(0).hour > 0) %>
+					<%= (Time.at(Time.now - c['time']).hour - Time.at(0).hour) %> hours ago ·
+				<% elsif(Time.at(Time.now - c['time']).min - Time.at(0).min > 0) %>
+					<%= (Time.at(Time.now - c['time']).min - Time.at(0).min) %> minutes ago ·
+				<% else %>
+					<%= (Time.at(Time.now - c['time']).sec- Time.at(0).sec) %> secs ago ·
+				<% end %>
+			</div>
+		</div>
+		</li>
+		<% end %>
+	<% end %>
+	</ul>
+</div>

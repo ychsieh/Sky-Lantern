@@ -1,0 +1,306 @@
+a:visited {
+  color: #005AB5; }
+
+a {
+  text-decoration: none; }
+
+div.msgBackground {
+  /*opacity: 0.8;
+  -moz-opacity: 0.8;
+  filter:alpha(opacity=8);*/
+  z-index: 5; }
+
+div.msg_id {
+  width: 1100px;
+  height: 600px;
+  margin-left: 120px;
+  margin-top: 30px;
+  border: 3px solid Black;
+  border-radius: 5px;
+  z-index: 99;
+  position: absolute;
+  background: white; }
+  div.msg_id div.left {
+    width: 700px;
+    height: 600px;
+    border-right: 1px inset #757575;
+    display: inline-block;
+    position: absolute; }
+    div.msg_id div.left button.prev {
+      background: #FFFFFF;
+      border: 0px;
+      border-radius: 5px;
+      float: left;
+      font-size: 15px; }
+    div.msg_id div.left button.next {
+      background: #FFFFFF;
+      border: 0px;
+      border-radius: 5px;
+      float: right;
+      font-size: 15px; }
+    div.msg_id div.left button.prev:hover {
+      background: #f5f59c;
+      color: #cc8b08;
+        /*z-index: 50;
+        width:15px;
+        height:15px;
+        position: absolute;
+        background-color: #F9F262;
+        top:270px;
+        left:10px;
+        border-style: none;
+        border-radius:10px;
+        opacity: 1;
+        box-shadow: -1px -5px 50px 20px #F9F262;*/ }
+    div.msg_id div.left button.next:hover {
+      background: #f5f59c;
+      color: #cc8b08;
+        /*z-index: 50;
+        width:15px;
+        height:15px;
+        position: absolute;
+        background-color: #F9F262;
+        top:270px;
+        left:10px;
+        border-style: none;
+        border-radius:10px;
+        opacity: 1;
+        box-shadow: -1px -5px 50px 20px #F9F262;*/ }
+    div.msg_id div.left div.profile img.feedprofile {
+      /*                      
+      height: 135px; 
+      width: 110px;*/
+      left: 20px;
+      margin-top: 35px;
+      position: absolute;
+      max-width: 110px; 
+      max-height: 140px;}
+    div.msg_id div.left div.titleitem {
+      background: #FFFFFF;
+      width: 485px;
+      margin-left: 85px;
+      margin-top: 35px;
+      display: inline-block;
+      vertical-align: top; }
+      div.msg_id div.left div.titleitem div.content {
+        padding-top: 5px;
+        margin-left: 10px; }
+      div.msg_id div.left div.titleitem div.feeditemtime {
+        opacity: 0.5;
+        text-align: center;
+        padding-top: 10px; }
+      div.msg_id div.left div.titleitem h1 {
+        color: #005AB5;
+        width: 400px;
+        font-weight: bold;
+        padding-bottom: 10px; }
+      div.msg_id div.left div.titleitem h1:hover {
+        opacity: 0.5;
+        -moz-opacity: 0.5;
+        filter: alpha(opacity=5); }
+      div.msg_id div.left div.titleitem button.name {
+        background: #FFFFFF;
+        color: #005AB5;
+        border: 0px;
+        padding: 0px;
+        font-weight: bold; }
+      div.msg_id div.left div.titleitem button.name:hover {
+        opacity: 0.5; }
+
+    div.msg_id div.left div.mood {
+      display: inline-block;
+      font-size: 13px;
+      /*position: absolute;*/
+      margin-top: 32px;
+      margin-left: 145px;
+      vertical-align: bottom; }
+      div.msg_id div.left div.mood span {
+        margin-left: 4px; }
+      div.msg_id div.left div.mood h1 {
+        color: #005AB5;
+        width: 400px;
+        font-weight: bold;
+        padding-bottom: 10px; }
+      div.msg_id div.left div.mood h1:hover {
+        opacity: 0.5;
+        -moz-opacity: 0.5;
+        filter: alpha(opacity=5); }
+      div.msg_id div.left div.mood button.like {
+        /*background: #FFFFFF;*/
+        /*color: #005AB5;*/
+        /*border: 0px;*/
+        /*padding: 0px;*/
+        font-weight: bold;
+        font-size: 10px; }
+      div.msg_id div.left div.mood button.lol:hover {
+        opacity: 0.5; }
+      div.msg_id div.left div.mood button.lol {
+        /*background: #FFFFFF;*/
+        /*color: #005AB5;*/
+        /*border: 0px;*/
+        /*padding: 0px;*/
+        font-weight: bold;
+        font-size: 10px; }
+      div.msg_id div.left div.mood button.like:hover {
+        opacity: 0.5; }
+    div.msg_id div.left div.delete_feed {
+      /*margin-left: 60px;
+      float: right;
+      position: absolute;
+      display: inline-block;
+      border-radius: 8px;
+      background: #FFFFFF;
+      color: #005AB5;*/
+      width: 36px;
+      height: 36px;
+      margin-top: 36px;
+      float: right;
+      display: inline-block;
+      cursor: pointer;
+      z-index: 99;
+      background-position: center center;
+      background: url(trashcan3.png);
+      background-repeat: no-repeat; }
+    div.msg_id div.left div.line {
+      margin: 10px 10px;
+      border-bottom: 2px inset #757575; }
+    div.msg_id div.left div.vote {
+      /*margin-top: 10px;*/
+      text-align: center;
+      width: 700px;
+      border-top: 1px inset #757575;
+      border-bottom: 1px inset #757575; }
+    div.msg_id div.left div.description {
+      /*margin-top: 10px;*/
+      /*margin-left: 20px;*/
+      width: 700px;
+      height: 130px;
+      /*border-top: 1px inset #757575;*/
+      /*border-bottom: 1px inset #757575;*/
+      /*background: $color;*/ }
+      div.msg_id div.left div.description p {
+        padding: 0px 10px; }
+      div.msg_id div.left div.description div.donestamp img {
+        max-width: 100px;
+        max-height: 100px;
+        margin-top: 5px;
+        float: right;
+        margin-right: 30px;
+        position: relative; }
+    div.msg_id div.left h2 {
+      text-align: center;
+      border-bottom: 1px inset #757575;
+      border-top: 1px inset #757575;
+      width: 200px;
+      margin-left: 250px;
+      background: #F0F0F0; }
+    div.msg_id div.left div.proof {
+      /*background: $color;*/
+      margin-top: 10px;
+      /*margin-left: 200px;*/ }
+      div.msg_id div.left div.proof img {
+        max-width: 300px;
+        max-height: 200px; }
+  div.msg_id div.right {
+    margin-left: 701px;
+    width: 399px;
+    height: 600px;
+    display: inline-block;
+    position: absolute;
+    overflow-y: auto;
+    overflow-x: hidden;
+    /*background: #ffffad;*/ }
+    div.msg_id div.right h1.comment {
+      font: 125% "Lucida Grande", "Trebuchet MS", Verdana, sans-serif;
+      margin: 5px 0px 0px 150px;
+      /*float: right;*/
+      text-align: center; }
+    div.msg_id div.right div.quit {
+      display: inline-block;
+      float: right;
+      /*text-align: left;*/
+      position: relative;
+      padding: 2px 2px 5px 15px;
+      margin-right: 8px;
+      /*border-radius: 5px;*/ }
+      div.msg_id div.right div.quit a {
+        width: 15px;
+        height: 15px;
+        color: black; }
+      div.msg_id div.right div.quit a:hover {
+        font-size: 20px;
+        font-weight: 20;
+        font-style: bold; }
+    div.msg_id div.right div.comment {
+      background: #F0F0F0;
+      margin: 8px 5px 5px 5px;
+      padding: 4px;
+      border-radius: 5px; }
+      div.msg_id div.right div.comment form.comment div.listcomment {
+        border-bottom: 2px solid;
+        border-color: rgba(0, 0, 0, 0.2);
+        /*border-bottom: 1px inset #757575;
+        border-color: #8c8c8c;*/
+        padding: 5px 0px; }
+        div.msg_id div.right div.comment form.comment div.listcomment div.delete_comment {
+          display: inline-block;
+          float: right;
+          position: relative;
+          margin-right: 7px;
+          margin-top: -5px; }
+          div.msg_id div.right div.comment form.comment div.listcomment div.delete_comment a {
+            color: gray;
+            opacity: 0.3;
+            -moz-opacity: 0.3;
+            filter: alpha(opacity=3); }
+          div.msg_id div.right div.comment form.comment div.listcomment div.delete_comment a:hover {
+            color: #000000;
+            font-style: bold;
+            font-size: 18px; }
+      div.msg_id div.right div.comment form.comment img.commentprofile {
+        margin-left: 4px;
+        height: 70px;
+        width: 60px; }
+      div.msg_id div.right div.comment form.comment a.pic {
+        display: inline-block;
+        float: left; }
+      div.msg_id div.right div.comment form.comment a.name {
+        margin-left: 10px;
+        margin-top: 0px;
+        color: #005AB5;
+        font-weight: bold;
+        display: inline-block; }
+      div.msg_id div.right div.comment form.comment a.name:hover {
+        opacity: 0.5;
+        -moz-opacity: 0.5;
+        filter: alpha(opacity=5); }
+      div.msg_id div.right div.comment form.comment div.commentcontent {
+        width: 540px;
+        margin-left: 90px;
+        margin-top: 5px;
+        /*color: Blue;*/ }
+      div.msg_id div.right div.comment form.comment div.time {
+        font-size: 12px;
+        margin-top: 11px;
+        margin-left: 10px;
+        display: inline-block;
+        opacity: 0.5; }
+      div.msg_id div.right div.comment form.comment span.number {
+        margin-left: 2px;
+        font-size: 12px; }
+      div.msg_id div.right div.comment form.comment button {
+        background: #F0F0F0;
+        color: #005AB5;
+        border: 0px;
+        padding: 0px;
+        font-weight: bold;
+        margin-left: 2px; }
+      div.msg_id div.right div.comment form.comment button:hover {
+        opacity: 0.5; }
+      div.msg_id div.right div.comment form.comment div.new {
+        background: #F0F0F0;
+        /*width: 390px;*/
+        /*position: absolute;*/ }
+        div.msg_id div.right div.comment form.comment div.new input {
+          width: 370px;
+          margin: 5px 5px 5px 5px; }

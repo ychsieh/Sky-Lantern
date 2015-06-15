@@ -1,0 +1,29 @@
+
+div.CF {
+  position: absolute;
+  margin-top: 25%;
+  margin-left: 47%; }
+  div.CF div.login {
+    float: left;
+    position: absolute;
+    margin-left: -210px;
+    margin-top: 185px;
+    background: url(../images/fb-login-button.png);
+    width: 154px;
+    height: 22px; }
+  div.CF div.bg01 {
+    position: absolute;
+    width: 800px;
+    height: 600px;
+    margin-left: -400px;
+    margin-top: -160px;
+    background: url(../images/bg_element_01.gif);
+    background-repeat: no-repeat; }
+  div.CF div.bg02 {
+    position: absolute;
+    width: 502px;
+    height: 140px;
+    margin-left: -500px;
+    margin-top: 30px;
+    background: url(../images/bg_element_02.gif);
+    background-repeat: no-repeat; }

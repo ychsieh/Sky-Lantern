@@ -1,0 +1,25 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  user_id: MyString
+  msg_id: MyString
+  title: MyString
+  content: MyText
+  start_time: MyString
+  deadline: MyString
+  like: MyText
+  lol: MyText
+  prev: MyString
+  next: MyString
+
+two:
+  user_id: MyString
+  msg_id: MyString
+  title: MyString
+  content: MyText
+  start_time: MyString
+  deadline: MyString
+  like: MyText
+  lol: MyText
+  prev: MyString
+  next: MyString
